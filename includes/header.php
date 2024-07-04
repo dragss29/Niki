@@ -22,8 +22,8 @@
                         echo '<li><a href="deconnexion.php">Déconnexion</a></li>';
                     } else {
                         // Si non connecté, afficher ces liens
-                        echo '<li><a href="login.php">Connexion</a></li>';
-                        echo '<li><a href="register.php">Inscription</a></li>';
+                        echo '<li><a href="pages/login.php">Connexion</a></li>';
+                        echo '<li><a href="pages/register.php">Inscription</a></li>';
                     }
                     ?>
                 </ul>
