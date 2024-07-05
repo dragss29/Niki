@@ -1,52 +1,53 @@
 <?php
-include '../includes/header.php';
-include '../includes/db.php';
-include '../includes/functions.php';
+include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/db.php';
+include __DIR__ . '/../includes/functions.php';
 
-$errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    // Vérifiez que la connexion est établie
+    if ($conn) {
+        // Récupérer les données du formulaire
+        $username = $_POST['username'];
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    // Vérifier si l'utilisateur existe déjà
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    $existingUser = $stmt->fetch();
+        // Préparer et exécuter la requête SQL
+        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $password);
 
-    if ($existingUser) {
-        $errors[] = "Ce nom d'utilisateur est déjà pris.";
+        if ($stmt->execute()) {
+            // Récupérer l'ID de l'utilisateur nouvellement créé
+            $user_id = $conn->lastInsertId();
+
+            // Définir les variables de session
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['username'] = $username;
+
+            // Rediriger vers la page des cours
+            header("Location: /courses");
+            exit();
+        } else {
+            echo "Erreur lors de l'enregistrement de l'utilisateur";
+        }
     } else {
-        // Insérer l'utilisateur dans la base de données
-        $hashed_password = hash_password($password);
-        $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-        $stmt->execute([$username, $email, $hashed_password]);
-
-        // Rediriger vers la page de connexion après l'inscription
-        redirect('/login');
+        echo "Erreur de connexion à la base de données";
     }
 }
 ?>
-
-<h2>Inscription</h2>
-<form method="post">
-    <label for="username">Nom d'utilisateur:</label>
-    <input type="text" id="username" name="username" required><br><br>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br><br>
-
-    <label for="password">Mot de passe:</label>
-    <input type="password" id="password" name="password" required><br><br>
-
-    <button type="submit">S'inscrire</button>
-</form>
+<main>
+    <h1>Register</h1>
+    <form method="post" action="/register">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="submit">Register</button>
+    </form>
+</main>
 
 <?php
-if ($errors) {
-    display_error($errors);
-}
-
-include '../includes/footer.php';
+include __DIR__ . '/../includes/footer.php';
 ?>

@@ -1,34 +1,29 @@
-<?php include ('../includes/header.php'); ?>
+<?php
+include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/db.php';
+include __DIR__ . '/../includes/functions.php';
+?>
 
 <section id="catalogue">
     <h1>Catalogue de Contenu</h1>
     <div class="catalogue-grid">
-        <div class="vignette">
-            <a href="detail.php?id=1">
-                <img src="images/pic1.jpg" alt="Contenu 1">
-                <div class="vignette-title">Contenu 1</div>
-            </a>
-        </div>
-        <div class="vignette">
-            <a href="detail.php?id=2">
-                <img src="images/pic2.jpg" alt="Contenu 2">
-                <div class="vignette-title">Contenu 2</div>
-            </a>
-        </div>
-        <div class="vignette">
-            <a href="detail.php?id=3">
-                <img src="images/pic3.jpg" alt="Contenu 2">
-                <div class="vignette-title">Contenu 2</div>
-            </a>
-        </div>
-        <div class="vignette">
-            <a href="detail.php?id=4">
-                <img src="images/pic4.jpg" alt="Contenu 2">
-                <div class="vignette-title">Contenu 2</div>
-            </a>
-        </div>
-        <!-- Ajoutez plus de vignettes ici -->
+        <?php
+        // Récupérer les données depuis la base de données
+        $stmt = $conn->prepare("SELECT * FROM contents");
+        $stmt->execute();
+        $contents = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Afficher les données dynamiquement
+        foreach ($contents as $content) {
+            echo '<div class="vignette">';
+            echo '<a href="detail.php?id=' . htmlspecialchars($content['id']) . '">';
+            echo '<img src="' . htmlspecialchars($content['image']) . '" alt="' . htmlspecialchars($content['title']) . '">';
+            echo '<div class="vignette-title">' . htmlspecialchars($content['title']) . '</div>';
+            echo '</a>';
+            echo '</div>';
+        }
+        ?>
     </div>
 </section>
 
-<?php include ('../includes/footer.php'); ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

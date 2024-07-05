@@ -1,4 +1,8 @@
-<?php include ('includes/header.php'); ?>
+<?php
+include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/db.php';
+include __DIR__ . '/../includes/functions.php';
+?>
 
 <section class="landing">
   <video autoplay muted loop class="video-bg">
@@ -10,4 +14,4 @@
     <p>Texte de description ou call-to-action</p>
   </div>
 </section>
-<?php include ('includes/footer.php'); ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

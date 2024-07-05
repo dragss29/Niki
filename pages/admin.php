@@ -1,14 +1,14 @@
 <?php
-include '../includes/header.php';
-include '../includes/db.php';
-include '../includes/functions.php';
+include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/db.php';
+include __DIR__ . '/../includes/functions.php';
 
 // Vérifier si l'utilisateur est connecté et est administrateur
 if (!is_logged_in()) {
-    redirect('/slogin');
+    redirect('/login');
 }
 
 // Ici vous pouvez ajouter la logique pour gérer le contenu (ajout, modification, suppression)
 
-include '../includes/footer.php';
+include __DIR__ . '/../includes/footer.php';
 ?>

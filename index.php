@@ -21,8 +21,23 @@ switch ($request) {
     case '/register':
         require __DIR__ . '/pages/register.php';
         break;
-    case '/catalogue':
-        require __DIR__ . '/pages/catalogue.php';
+    case '/courses':
+        // Vérifier si l'utilisateur est connecté
+        if (isset($_SESSION['user_id'])) {
+            require __DIR__ . '/pages/catalogue.php';
+        } else {
+            // Rediriger vers la page de login ou afficher un message d'erreur
+            header("Location: /login");
+            exit();
+        }
+        break;
+    case '/logout':
+        // Déconnecter l'utilisateur
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: /");
+        exit();
         break;
     default:
         http_response_code(404);

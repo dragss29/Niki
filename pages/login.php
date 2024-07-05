@@ -1,7 +1,7 @@
 <?php
-include '../includes/header.php';
-include '../includes/db.php';
-include '../includes/functions.php';
+include __DIR__ . '/../includes/header.php';
+include __DIR__ . '/../includes/db.php';
+include __DIR__ . '/../includes/functions.php';
 
 $errors = [];
 
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     // Vérifier l'existence de l'utilisateur dans la base de données
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email'];
 
-        redirect('index.php'); // Rediriger vers la page d'accueil après la connexion
+        redirect('/courses'); // Rediriger vers la page des cours après la connexion
     } else {
         $errors[] = "Identifiants invalides. Veuillez réessayer.";
     }
@@ -44,5 +44,5 @@ if ($errors) {
     display_error($errors);
 }
 
-include '../includes/footer.php';
+include __DIR__ . '/../includes/footer.php';
 ?>
