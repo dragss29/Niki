@@ -1,7 +1,7 @@
-<?php include('includes/header.php'); ?>
+<?php include ('../includes/header.php'); ?>
 
 <section id="catalogue">
-<h1>Catalogue de Contenu</h1>
+    <h1>Catalogue de Contenu</h1>
     <div class="catalogue-grid">
         <div class="vignette">
             <a href="detail.php?id=1">
@@ -31,4 +31,4 @@
     </div>
 </section>
 
-<?php include('includes/footer.php'); ?>
+<?php include ('../includes/footer.php'); ?>

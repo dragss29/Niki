@@ -1,7 +1,7 @@
 <?php
-include 'includes/header.php';
-include 'includes/db.php';
-include 'includes/functions.php';
+include '../includes/header.php';
+include '../includes/db.php';
+include '../includes/functions.php';
 
 $errors = [];
 
@@ -48,5 +48,5 @@ if ($errors) {
     display_error($errors);
 }
 
-include 'includes/footer.php';
+include '../includes/footer.php';
 ?>

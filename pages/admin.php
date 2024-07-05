@@ -1,7 +1,7 @@
 <?php
-include 'includes/header.php';
-include 'includes/db.php';
-include 'includes/functions.php';
+include '../includes/header.php';
+include '../includes/db.php';
+include '../includes/functions.php';
 
 // Vérifier si l'utilisateur est connecté et est administrateur
 if (!is_logged_in()) {
@@ -10,5 +10,5 @@ if (!is_logged_in()) {
 
 // Ici vous pouvez ajouter la logique pour gérer le contenu (ajout, modification, suppression)
 
-include 'includes/footer.php';
+include '../includes/footer.php';
 ?>

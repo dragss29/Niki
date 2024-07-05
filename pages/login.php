@@ -1,7 +1,7 @@
 <?php
-include 'includes/header.php';
-include 'includes/db.php';
-include 'includes/functions.php';
+include '../includes/header.php';
+include '../includes/db.php';
+include '../includes/functions.php';
 
 $errors = [];
 
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email'];
-        
+
         redirect('index.php'); // Rediriger vers la page d'accueil après la connexion
     } else {
         $errors[] = "Identifiants invalides. Veuillez réessayer.";
