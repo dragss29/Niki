@@ -139,3 +139,16 @@ body {
         width: 90%;
     }
 }
+
+.add-new {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    cursor: pointer;
+}
+
+.add-new-icon {
+    font-size: 2em;
+    color: #666;
+}
