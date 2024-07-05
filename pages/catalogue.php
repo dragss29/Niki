@@ -26,8 +26,7 @@ include __DIR__ . '/../includes/functions.php';
 
         <!-- Vignette vide pour ajouter du contenu -->
         <div class="vignette add-new">
-            <a href="add_content.php">
-                <div class="add-new-icon">+</div>
+            <a href="/add_content">
                 <div class="vignette-title">Ajouter une nouvelle vignette</div>
             </a>
         </div>

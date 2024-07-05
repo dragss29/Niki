@@ -31,6 +31,12 @@ switch ($request) {
             exit();
         }
         break;
+    case '/add_content':
+        require __DIR__ . '/pages/add_content.php';
+        break;
+    case (preg_match('/\/detail\.php/', $request) ? true : false):
+        require __DIR__ . '/pages/detail.php';
+        break;
     case '/logout':
         // Déconnecter l'utilisateur
         session_start();
