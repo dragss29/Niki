@@ -44,5 +44,5 @@ if ($errors) {
     display_error($errors);
 }
 
-include 'includes/footer.php';
+include '../includes/footer.php';
 ?>

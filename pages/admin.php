@@ -5,7 +5,7 @@ include '../includes/functions.php';
 
 // Vérifier si l'utilisateur est connecté et est administrateur
 if (!is_logged_in()) {
-    redirect('login.php');
+    redirect('/slogin');
 }
 
 // Ici vous pouvez ajouter la logique pour gérer le contenu (ajout, modification, suppression)

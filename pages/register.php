@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$username, $email, $hashed_password]);
 
         // Rediriger vers la page de connexion après l'inscription
-        redirect('login.php');
+        redirect('/login');
     }
 }
 ?>
