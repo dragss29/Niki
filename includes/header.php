@@ -3,30 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Votre Site</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <title>Mon Site</title>
+    <link rel="stylesheet" href="../css/styles.css" type="text/css">
+    <?php
+    $page = basename($_SERVER['SCRIPT_FILENAME'], '.php');
+    if (file_exists(__DIR__ . "/../css/{$page}.css")): ?>
+        <link rel="stylesheet" href="../css/<?= $page ?>.css">
+    <?php endif; ?>
 </head>
 
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="/">Accueil</a></li>
-                <?php
-                include __DIR__ . '/config.php'; // Inclure le fichier de configuration
-                
-                // Vérifier si l'utilisateur est connecté
-                if (isset($_SESSION['user_id'])) {
-                    // Si connecté, afficher ces liens
-                    echo '<li><a href="/courses">Course</a></li>';
-                    echo '<li><a href="/logout">Logout</a></li>';
-                } else {
-                    // Si non connecté, afficher ces liens
-                    echo '<li><a href="/login">Login</a></li>';
-                    echo '<li><a href="/register">Register</a></li>';
-                }
-                ?>
+                <li><a href="/">Home</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li><a href="/courses">Courses</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                <?php else: ?>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>

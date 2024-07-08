@@ -1,0 +1,19 @@
+/* home.css */
+
+/* Styles pour la page d'accueil */
+.home-container {
+  padding: 2rem;
+  background-color: #222; /* Fond sombre */
+  color: #fff; /* Texte blanc */
+  text-align: center; /* Alignement du texte au centre */
+}
+
+.home-container h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.home-container p {
+  font-size: 1.2rem;
+  margin-top: 0;
+}

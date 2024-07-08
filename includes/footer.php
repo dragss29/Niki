@@ -1,5 +1,5 @@
 <footer>
-    <p>&copy; 2024 Votre Site</p>
+    <p>&copy; 2024 NikiApp<br>Powered by Notorious</p>
 </footer>
 </body>
 

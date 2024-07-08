@@ -4,6 +4,9 @@ include __DIR__ . '/../includes/db.php';
 include __DIR__ . '/../includes/functions.php';
 ?>
 
+<link rel="stylesheet" href="../css/home.css">
+
+
 <section class="landing">
   <video autoplay muted loop class="video-bg">
     <source src="uploads/test.mp4" type="video/mp4">

@@ -1,154 +1,206 @@
-/* Styles généraux pour tout l'écran */
-body {
-    font-family: Arial, sans-serif;
+/* Réinitialisation des styles */
+* {
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    box-sizing: border-box;
+}
+
+/* Styles globaux */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
     color: #333;
+    background-color: #f4f4f4;
 }
 
-/* Media query pour les appareils jusqu'à 768px (par exemple iPhone en mode portrait) */
-@media (max-width: 768px) {
-    /* Styles spécifiques pour les petits écrans */
-    header {
-        background-color: #333;
-        padding: 10px 0;
-    }
-
-    nav ul {
-        list-style-type: none;
-        padding: 0;
-        text-align: center;
-    }
-
-    nav ul li {
-        display: inline-block;
-        margin: 0 10px;
-    }
-
-    nav ul li a {
-        color: #fff;
-        text-decoration: none;
-        padding: 10px;
-    }
-
-    main {
-        padding: 10px;
-    }
-
-    footer {
-        background-color: #333;
-        color: #fff;
-        text-align: center;
-        padding: 10px;
-    }
-}
-
-.landing {
-    background-color: #000; /* Couleur de fond pour la section */
-    color: #fff; /* Couleur de texte */
-    height: calc(93vh - 100px); /* Hauteur égale à la hauteur de la fenêtre moins la hauteur du header */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.landing video,
-.landing img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
+/* En-tête */
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem;
+    position: fixed;
     top: 0;
     left: 0;
-}
-
-.landing-content {
-    position: relative;
-    z-index: 1;
-}
-
-.landing h1 {
-    font-size: 3em;
-    margin-bottom: 0.5em;
-}
-
-.landing p {
-    font-size: 1.5em;
-}
-
-.video-bg {
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* Assurez-vous que la vidéo couvre toute la section */
+    z-index: 1000;
 }
 
-/* Styles pour la section catalogue */
-.catalogue {
-    padding: 20px;
-    background-color: #f8f8f8;
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
     text-align: center;
 }
 
-.catalogue h1 {
-    margin-bottom: 20px;
-    font-size: 2em;
-}
-
-.catalogue-grid {
+nav ul {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
     justify-content: center;
+    list-style: none;
+    padding: 0;
 }
 
-.vignette {
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+nav ul li {
+    margin: 0 1rem;
 }
 
-.vignette:hover {
-    transform: scale(1.05);
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
 }
 
-.vignette img {
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Contenu principal */
+main {
+    max-width: 1200px;
+    margin: 4rem auto 2rem;
+    padding: 1rem;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Pied de page */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
     width: 100%;
-    height: auto;
+    position: relative;
+    bottom: 0;
 }
 
-.vignette-title {
-    padding: 10px;
-    font-size: 1.2em;
-    font-weight: bold;
+/* Formulaires */
+form {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .catalogue-grid {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .vignette {
-        width: 90%;
-    }
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
-.add-new {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px dashed #ccc;
+form input, form select, form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    background: #333;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-.add-new-icon {
-    font-size: 2em;
-    color: #666;
+form button:hover {
+    background: #555;
+}
+
+/* Page 404 */
+.error-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.error-container h1 {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+}
+
+.error-container p {
+    margin-bottom: 1rem;
+}
+
+.error-container .button {
+    background: #e50914;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.error-container .button:hover {
+    background: #b81d1d;
+}
+
+/* Page Login & Register */
+.form-container {
+    max-width: 100%;
+    margin: 1rem auto;
+    padding: 1rem;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.form-container h1 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container label {
+    margin-bottom: 0.5rem;
+}
+
+.form-container input {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-container button {
+    background: #333;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background: #555;
+}
+
+/* Styles responsive */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 0.5rem;
+    }
+
+    nav ul li a {
+        font-size: 0.9rem;
+    }
+
+    main {
+        margin: 4rem auto 2rem;
+        padding: 0.5rem;
+    }
+
+    footer {
+        padding: 0.5rem;
+    }
 }

@@ -1,8 +1,11 @@
-<?php include '../includes/header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
 
-<section class="not-found">
-  <h1>Page non trouvée</h1>
-  <p>La page que vous recherchez n'existe pas.</p>
-</section>
+<main>
+  <section class="error-container">
+    <h1>404</h1>
+    <p>Page not found</p>
+    <a href="/" class="button">Return Home</a>
+  </section>
+</main>
 
-<?php include '../includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

@@ -1,53 +1,86 @@
 <?php
 
-// Start a session if not already started
+// Démarrer une session si ce n'est pas déjà fait
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Simple router
+// Définir le chemin racine
+define('ROOT_PATH', __DIR__ . '/');
+
+// Routeur simple
 $request = $_SERVER['REQUEST_URI'];
 
-// Remove query string
+// Retirer la chaîne de requête
 $request = parse_url($request, PHP_URL_PATH);
 
-switch ($request) {
-    case '/':
-        require __DIR__ . '/pages/home.php';
-        break;
-    case '/login':
-        require __DIR__ . '/pages/login.php';
-        break;
-    case '/register':
-        require __DIR__ . '/pages/register.php';
-        break;
-    case '/courses':
-        // Vérifier si l'utilisateur est connecté
+// Supprimer le slash final pour uniformité
+$request = rtrim($request, '/');
+
+// Traiter les routes définies
+$routes = [
+    '/' => ROOT_PATH . 'pages/home.php',
+    '/login' => ROOT_PATH . 'pages/login.php',
+    '/register' => ROOT_PATH . 'pages/register.php',
+    '/courses' => function () {
         if (isset($_SESSION['user_id'])) {
-            require __DIR__ . '/pages/catalogue.php';
+            require ROOT_PATH . 'pages/catalogue.php';
         } else {
-            // Rediriger vers la page de login ou afficher un message d'erreur
             header("Location: /login");
             exit();
         }
-        break;
-    case '/add_content':
-        require __DIR__ . '/pages/add_content.php';
-        break;
-    case (preg_match('/\/detail\.php/', $request) ? true : false):
-        require __DIR__ . '/pages/detail.php';
-        break;
-    case '/logout':
-        // Déconnecter l'utilisateur
-        session_start();
+    },
+    '/add_content' => function () {
+        if (isset($_SESSION['user_id'])) {
+            require ROOT_PATH . 'pages/add_content.php';
+        } else {
+            header("Location: /login");
+            exit();
+        }
+    },
+    '/add_content_process' => ROOT_PATH . 'pages/add_content_process.php',
+    '/logout' => function () {
         session_unset();
         session_destroy();
         header("Location: /");
         exit();
-        break;
-    default:
-        http_response_code(404);
-        require __DIR__ . '/pages/404.php';
-        break;
+    }
+];
+
+// Fonction pour gérer les routes
+function handleRoute($request, $routes)
+{
+    foreach ($routes as $route => $action) {
+        if ($route === $request) {
+            if (is_callable($action)) {
+                $action();
+            } else {
+                require $action;
+            }
+            return;
+        }
+    }
+
+    // Traiter les paramètres de requête pour la page de détails
+    if (preg_match('/^\/detail$/', $request)) {
+        $queryString = $_SERVER['QUERY_STRING'];
+        parse_str($queryString, $queryParams);
+        $id = isset($queryParams['id']) ? $queryParams['id'] : null;
+        if ($id) {
+            require ROOT_PATH . 'pages/detail.php';
+        } else {
+            http_response_code(400);
+            echo "Paramètre 'id' manquant.";
+        }
+        return;
+    }
+
+    // Page 404
+    http_response_code(404);
+    require ROOT_PATH . 'pages/404.php';
 }
+
+// Appeler le gestionnaire de route
+handleRoute($request, $routes);
+
 ?>
