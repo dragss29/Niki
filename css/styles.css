@@ -476,3 +476,48 @@ form button:hover {
     }
 }
 
+/* ADMIN */
+
+.admin-container {
+    padding: 20px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.admin-table th {
+    background-color: #f2f2f2;
+}
+
+/* EDIT MODAL */
+.edit-content-container {
+    padding: 20px;
+}
+
+.edit-content-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-content-container label {
+    margin-top: 10px;
+}
+
+.edit-content-container input,
+.edit-content-container textarea,
+.edit-content-container button {
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.edit-content-container img {
+    margin-top: 10px;
+}

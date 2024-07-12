@@ -38,7 +38,38 @@ $routes = [
             exit();
         }
     },
-    '/add_content_process' => ROOT_PATH . 'pages/add_content_process.php',
+    '/add_content_process' => function () {
+        if (isset($_SESSION['user_id'])) {
+            require ROOT_PATH . 'pages/add_content_process.php';
+        } else {
+            header("Location: /login");
+            exit();
+        }
+    },
+    '/edit_content' => function () {
+        if (isset($_SESSION['user_id']) && !empty($_SESSION['is_admin'])) {
+            require ROOT_PATH . 'pages/edit_content.php';
+        } else {
+            header("Location: /login");
+            exit();
+        }
+    },
+    '/delete_content' => function () {
+        if (isset($_SESSION['user_id']) && !empty($_SESSION['is_admin'])) {
+            require ROOT_PATH . 'pages/delete_content.php';
+        } else {
+            header("Location: /login");
+            exit();
+        }
+    },
+    '/admin' => function () {
+        if (isset($_SESSION['user_id']) && !empty($_SESSION['is_admin'])) {
+            require ROOT_PATH . 'pages/admin.php';
+        } else {
+            header("Location: /login");
+            exit();
+        }
+    },
     '/logout' => function () {
         session_unset();
         session_destroy();
