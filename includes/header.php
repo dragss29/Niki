@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Mon Site</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-8iOqOztZlkeU6TQXQEC9NOj5w4IksFf+DA+5r+6hH47J0nGcPtwH9ay6HzPVDc5a" crossorigin="anonymous">
+
     <link rel="stylesheet" href="../css/styles.css" type="text/css">
     <?php
     $page = basename($_SERVER['SCRIPT_FILENAME'], '.php');

@@ -1,24 +1,24 @@
-/* Réinitialisation des styles */
+/* Réinitialisation des styles pour garantir une base cohérente */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Définition des variables CSS */
+/* Définition des variables CSS pour les couleurs et les styles */
 :root {
-    --primary-bg-color: #222; /* Couleur de fond sombre */
-    --primary-text-color: #fff; /* Couleur du texte blanc */
-    --secondary-bg-color: #f4f4f4; /* Couleur de fond secondaire */
-    --text-color: #333; /* Couleur du texte principal */
-    --accent-color: #e50914; /* Couleur d'accentuation */
-    --header-bg-color: #333; /* Couleur de fond de l'en-tête */
-    --footer-bg-color: #333; /* Couleur de fond du pied de page */
-    --form-bg-color: #fff; /* Couleur de fond des formulaires */
-    --button-bg-color: #333; /* Couleur de fond des boutons */
-    --button-hover-bg-color: #555; /* Couleur de fond au survol des boutons */
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre portée */
-    --border-radius: 5px; /* Rayon des bordures arrondies */
+    --primary-bg-color: #f8f9fa; /* Couleur de fond principale */
+    --secondary-bg-color: #343a40; /* Couleur de fond secondaire */
+    --primary-text-color: #212529; /* Couleur du texte principal */
+    --secondary-text-color: #adb5bd; /* Couleur du texte secondaire */
+    --accent-color: #007bff; /* Couleur d'accentuation */
+    --button-bg-color: #007bff; /* Couleur de fond des boutons */
+    --button-hover-bg-color: #0056b3; /* Couleur de fond au survol des boutons */
+    --header-bg-color: #343a40; /* Couleur de fond de l'en-tête */
+    --footer-bg-color: #343a40; /* Couleur de fond du pied de page */
+    --form-bg-color: #ffffff; /* Couleur de fond des formulaires */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre portée */
+    --border-radius: 0.375rem; /* Rayon des bordures arrondies */
     --transition-duration: 0.3s; /* Durée de la transition */
 }
 
@@ -26,23 +26,31 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    color: var(--text-color); /* Couleur du texte */
-    background-color: var(--secondary-bg-color); /* Couleur de fond */
+    color: var(--primary-text-color); /* Couleur du texte principal */
+    background-color: var(--primary-bg-color); /* Couleur de fond principale */
 }
 
 /* En-tête */
 header {
     background: var(--header-bg-color); /* Couleur de fond de l'en-tête */
-    color: var(--primary-text-color); /* Couleur du texte dans l'en-tête */
+    color: #ffffff; /* Couleur du texte dans l'en-tête */
     padding: 1rem;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée de l'en-tête */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée */
 }
 
+/* Contenu principal pour compenser l'en-tête fixe */
+main {
+    padding-top: 4rem;
+    max-width: 1200px; /* Largeur maximale du contenu principal */
+    margin: 0 auto;
+}
+
+/* Styles de l'en-tête */
 header h1 {
     margin: 0;
     font-size: 1.5rem;
@@ -62,7 +70,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color: var(--primary-text-color); /* Couleur des liens */
+    color: #ffffff; /* Couleur des liens */
     text-decoration: none;
 }
 
@@ -72,33 +80,28 @@ nav ul li a:hover {
 
 /* Contenu principal */
 main {
-    max-width: 1200px;
-    margin: 4rem auto 2rem;
-    padding: 1rem;
-    background: var(--form-bg-color); /* Couleur de fond du contenu principal */
-    box-shadow: var(--box-shadow); /* Ombre portée */
-    border-radius: var(--border-radius); /* Bordures arrondies */
+    padding: 2rem 1rem;
 }
 
 /* Pied de page */
 footer {
     background: var(--footer-bg-color); /* Couleur de fond du pied de page */
-    color: var(--primary-text-color); /* Couleur du texte dans le pied de page */
+    color: #ffffff; /* Couleur du texte dans le pied de page */
     text-align: center;
     padding: 1rem;
-    width: 100%;
-    position: relative;
-    bottom: 0;
+    margin-top: 2rem;
 }
 
 /* Formulaires */
 form {
     background: var(--form-bg-color); /* Couleur de fond des formulaires */
-    padding: 1rem;
+    padding: 1.5rem;
     border-radius: var(--border-radius); /* Bordures arrondies */
     box-shadow: var(--box-shadow); /* Ombre portée */
+    max-width: 100%; /* S'assurer que les formulaires ne dépassent pas la largeur du conteneur */
 }
 
+/* Assurer que les champs de formulaire et les boutons sont responsive */
 form label {
     display: block;
     margin-bottom: 0.5rem;
@@ -114,7 +117,7 @@ form input, form select, form textarea {
 
 form button {
     background: var(--button-bg-color); /* Couleur de fond des boutons */
-    color: var(--primary-text-color); /* Couleur du texte des boutons */
+    color: #ffffff; /* Couleur du texte des boutons */
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: var(--border-radius); /* Bordures arrondies */
@@ -133,7 +136,7 @@ form button:hover {
 }
 
 .error-container h1 {
-    font-size: 5rem;
+    font-size: 4rem;
     margin-bottom: 1rem;
 }
 
@@ -143,14 +146,14 @@ form button:hover {
 
 .error-container .button {
     background: var(--accent-color); /* Couleur d'accentuation pour le bouton */
-    color: var(--primary-text-color); /* Couleur du texte du bouton */
+    color: #ffffff; /* Couleur du texte du bouton */
     padding: 0.75rem 1.5rem;
     text-decoration: none;
     border-radius: var(--border-radius); /* Bordures arrondies */
 }
 
 .error-container .button:hover {
-    background: #b81d1d; /* Couleur de fond au survol */
+    background: #0056b3; /* Couleur de fond au survol */
 }
 
 /* Page Login & Register */
@@ -169,61 +172,33 @@ form button:hover {
     text-align: center;
 }
 
-.form-container form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-container label {
-    margin-bottom: 0.5rem;
-}
-
-.form-container input {
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius); /* Bordures arrondies */
-}
-
-.form-container button {
-    background: var(--button-bg-color); /* Couleur de fond des boutons */
-    color: var(--primary-text-color); /* Couleur du texte des boutons */
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: var(--border-radius); /* Bordures arrondies */
-    cursor: pointer;
-    transition: background-color var(--transition-duration) ease; /* Transition pour le changement de couleur */
-}
-
-.form-container button:hover {
-    background: var(--button-hover-bg-color); /* Couleur de fond au survol */
-}
-
 /* Page Catalogue */
 .catalogue-container {
-    padding: 1rem;
+    padding: 2rem 1rem;
+    max-width: 1200px; /* Largeur maximale du catalogue */
+    margin: 0 auto;
 }
 
 .catalogue-container h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: 2rem;
     text-align: center;
-    color: var(--text-color); /* Couleur du titre */
+    color: var(--primary-text-color); /* Couleur du titre */
 }
 
 /* Grille des vignettes */
 .catalogue-content {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 /* Vignette du catalogue */
 .catalogue-item {
     position: relative;
-    background: var(--primary-bg-color); /* Couleur de fond des vignettes */
-    color: var(--primary-text-color); /* Couleur du texte des vignettes */
-    border-radius: 10px; /* Bordures arrondies */
+    background: var(--secondary-bg-color); /* Couleur de fond des vignettes */
+    color: #ffffff; /* Couleur du texte des vignettes */
+    border-radius: var(--border-radius); /* Bordures arrondies */
     overflow: hidden;
     transition: transform var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
     cursor: pointer;
@@ -257,19 +232,17 @@ form button:hover {
     transform: translateY(0);
 }
 
-.catalogue-item-info h2 {
-    font-size: 1.2rem;
+.catalogue-item-info h3 {
     margin-bottom: 0.5rem;
 }
 
 .catalogue-item-info p {
-    color: #ddd;
     margin-bottom: 1rem;
 }
 
 .catalogue-item-info .button {
     background: var(--accent-color); /* Couleur d'accentuation pour le bouton */
-    color: var(--primary-text-color); /* Couleur du texte du bouton */
+    color: #ffffff; /* Couleur du texte du bouton */
     padding: 0.75rem 1.5rem;
     text-decoration: none;
     border-radius: var(--border-radius); /* Bordures arrondies */
@@ -278,13 +251,13 @@ form button:hover {
 }
 
 .catalogue-item-info .button:hover {
-    background: #b81d1d; /* Couleur de fond au survol */
+    background: #0056b3; /* Couleur de fond au survol */
 }
 
 /* Vignette pour ajouter un nouveau contenu */
 .catalogue-item.add-item {
     background: var(--header-bg-color); /* Couleur de fond de la vignette d'ajout */
-    color: var(--primary-text-color); /* Couleur du texte */
+    color: #ffffff; /* Couleur du texte */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -298,7 +271,7 @@ form button:hover {
     font-size: 2rem;
     background: var(--accent-color); /* Couleur d'accentuation pour le bouton d'ajout */
     border: none;
-    color: var(--primary-text-color); /* Couleur du texte du bouton d'ajout */
+    color: #ffffff; /* Couleur du texte du bouton d'ajout */
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -309,14 +282,14 @@ form button:hover {
 }
 
 .add-button:hover {
-    background: #b81d1d; /* Couleur de fond au survol */
+    background: #0056b3; /* Couleur de fond au survol */
 }
 
 /* Modal */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
@@ -327,46 +300,46 @@ form button:hover {
     justify-content: center;
 }
 
+/* Assurer que le contenu modal est bien centré */
 .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
+    background-color: #ffffff;
+    padding: 1.5rem;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 10px; /* Bordures arrondies */
+    width: 90%;
+    max-width: 500px; /* Largeur réduite pour les petits écrans */
+    border-radius: var(--border-radius); /* Bordures arrondies */
     box-shadow: var(--box-shadow); /* Ombre portée */
 }
 
 .close-button {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: var(--text-color); /* Couleur du bouton de fermeture */
+    color: var(--primary-text-color); /* Couleur du bouton de fermeture */
     text-decoration: none;
     cursor: pointer;
 }
 
 .modal-content h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 .modal-content form label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
 }
 
 .modal-content form input,
 .modal-content form textarea {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: var(--border-radius); /* Bordures arrondies */
 }
@@ -374,9 +347,9 @@ form button:hover {
 .modal-content form button {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 0.75rem;
     background-color: var(--button-bg-color); /* Couleur de fond du bouton */
-    color: var(--primary-text-color); /* Couleur du texte du bouton */
+    color: #ffffff; /* Couleur du texte du bouton */
     border: none;
     border-radius: var(--border-radius); /* Bordures arrondies */
     cursor: pointer;
@@ -392,6 +365,8 @@ form button:hover {
     flex-direction: column;
     align-items: center;
     padding: 1rem;
+    max-width: 1200px; /* Largeur maximale de la page détail */
+    margin: 0 auto;
 }
 
 .detail-content {
@@ -415,7 +390,7 @@ form button:hover {
 }
 
 .detail-text h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
 }
 
@@ -426,7 +401,7 @@ form button:hover {
 
 .detail-button {
     background: var(--accent-color); /* Couleur d'accentuation pour le bouton */
-    color: var(--primary-text-color); /* Couleur du texte du bouton */
+    color: #ffffff; /* Couleur du texte du bouton */
     padding: 0.75rem 1.5rem;
     text-decoration: none;
     border-radius: var(--border-radius); /* Bordures arrondies */
@@ -434,18 +409,41 @@ form button:hover {
 }
 
 .detail-button:hover {
-    background: #b81d1d; /* Couleur de fond au survol */
+    background: #0056b3; /* Couleur de fond au survol */
 }
 
 /* Styles responsive */
+@media (max-width: 1024px) {
+    /* Ajuster la taille des images et des vignettes pour les écrans moyens */
+    .catalogue-item img {
+        height: 130px;
+    }
+
+    .catalogue-item.add-item {
+        height: 130px;
+    }
+}
+
 @media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
     nav ul {
         flex-direction: column;
         align-items: center;
     }
 
+    .catalogue-content {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Ajuster le nombre de colonnes pour les petits écrans */
+    }
+
+    .modal-content {
+        width: 90%; /* Ajuster la largeur du modal pour les petits écrans */
+    }
+
     .detail-text h1 {
-        font-size: 1.5rem;
+        font-size: 1.4rem; /* Ajuster la taille du titre pour les petits écrans */
     }
 }
 
@@ -455,69 +453,22 @@ form button:hover {
     }
 
     nav ul li a {
-        font-size: 0.9rem;
-    }
-
-    main {
-        margin: 4rem auto 2rem;
-        padding: 0.5rem;
-    }
-
-    footer {
-        padding: 0.5rem;
+        font-size: 0.8rem; /* Réduire la taille des liens pour les très petits écrans */
     }
 
     .catalogue-item img {
-        height: 120px; /* Ajustement pour les petites écrans */
+        height: 120px; /* Ajuster la hauteur des images pour les très petits écrans */
     }
 
     .catalogue-item.add-item {
-        height: 120px; /* Ajustement pour les petites écrans */
+        height: 120px; /* Ajuster la hauteur pour les très petits écrans */
     }
-}
 
-/* ADMIN */
+    .form-container h1 {
+        font-size: 1.2rem; /* Réduire la taille du titre pour les très petits écrans */
+    }
 
-.admin-container {
-    padding: 20px;
-}
-
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.admin-table th, .admin-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.admin-table th {
-    background-color: #f2f2f2;
-}
-
-/* EDIT MODAL */
-.edit-content-container {
-    padding: 20px;
-}
-
-.edit-content-container form {
-    display: flex;
-    flex-direction: column;
-}
-
-.edit-content-container label {
-    margin-top: 10px;
-}
-
-.edit-content-container input,
-.edit-content-container textarea,
-.edit-content-container button {
-    padding: 10px;
-    margin-top: 5px;
-}
-
-.edit-content-container img {
-    margin-top: 10px;
+    .modal-content {
+        width: 95%; /* Ajuster la largeur du modal pour les très petits écrans */
+    }
 }
