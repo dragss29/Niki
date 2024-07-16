@@ -3,36 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Mon Site</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-8iOqOztZlkeU6TQXQEC9NOj5w4IksFf+DA+5r+6hH47J0nGcPtwH9ay6HzPVDc5a" crossorigin="anonymous">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $pageTitle ?? 'Niki App'; ?></title>
     <link rel="stylesheet" href="../css/styles.css" type="text/css">
-    <?php
-    $page = basename($_SERVER['SCRIPT_FILENAME'], '.php');
-    if (file_exists(__DIR__ . "/../css/{$page}.css")): ?>
-        <link rel="stylesheet" href="../css/<?= $page ?>.css">
-    <?php endif; ?>
-</head>
-
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/courses">Catalogue</a></li>
-                <?php if (!isset($_SESSION['user_id'])): ?>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/register">Register</a></li>
-                <?php endif; ?>
-                <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['is_admin'])): ?>
-                    <li><a href="/admin">Admin</a></li>
-                <?php endif; ?>
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <li><a href="/logout">Logout</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-
-
-
-    </header>
+    <link rel="stylesheet" href="../css/output.css" type="text/css">
+    </head>
+<body class="bg-gray-100 text-gray-900 font-sans leading-normal">
+<header class="bg-gray-800 text-white p-4 fixed w-full top-0 left-0 z-50 shadow-md">
+    <h1 class="text-center text-xl">Mon Site</h1>
+    <nav class="flex justify-around py-4">
+        <a href="/" class="text-white hover:bg-blue-700 p-2 rounded transition duration-300">Home</a>
+        <a href="/login" class="text-white hover:bg-blue-700 p-2 rounded transition duration-300">Login</a>
+        <a href="/register" class="text-white hover:bg-blue-700 p-2 rounded transition duration-300">Register</a>
+    </nav>
+</header>
+<main class="pt-16 max-w-6xl mx-auto">

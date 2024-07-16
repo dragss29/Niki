@@ -1,20 +1,12 @@
 <?php
-include __DIR__ . '/../includes/header.php';
-include __DIR__ . '/../includes/db.php';
-include __DIR__ . '/../includes/functions.php';
+$pageTitle = 'Accueil';
+include '../includes/header.php';
 ?>
 
-<link rel="stylesheet" href="../css/home.css">
+<h2 class="text-2xl font-bold mb-4">Bienvenue sur la page d'accueil</h2>
+<p class="mb-4">Voici le contenu principal de la page d'accueil.</p>
+<!-- Autres contenus de la page -->
 
-
-<section class="landing">
-  <video autoplay muted loop class="video-bg">
-    <source src="uploads/test.mp4" type="video/mp4">
-    <!-- Incluez ici des sources supplémentaires pour la compatibilité des navigateurs -->
-  </video>
-  <div class="landing-content">
-    <h1>Votre Titre</h1>
-    <p>Texte de description ou call-to-action</p>
-  </div>
-</section>
-<?php include __DIR__ . '/../includes/footer.php'; ?>
+<?php
+include '../includes/footer.php';
+?>
