@@ -1,53 +1,58 @@
 <?php
-include __DIR__ . '/../includes/header.php';
 include __DIR__ . '/../includes/db.php';
-include __DIR__ . '/../includes/functions.php';
 
-$errors = [];
+// Assurer que l'utilisateur est un superadmin
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'superadmin') {
+    echo '<p class="text-red-500 text-center">You must be logged in as superadmin to access this page.</p>';
+    exit();
+}
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $title = $_POST['title'];
-  $image = $_POST['image'];
-  $description = $_POST['description'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupérer les données du formulaire
+    $title = trim($_POST['title']);
+    $description = trim($_POST['description']);
+    $youtube_link = trim($_POST['youtube_link']);
 
-  if (empty($title) || empty($image) || empty($description)) {
-    $errors[] = "Tous les champs sont requis.";
-  } else {
-    // Insérer les données dans la base de données
-    $stmt = $conn->prepare("INSERT INTO contents (title, image, description) VALUES (:title, :image, :description)");
-    $stmt->bindParam(':title', $title);
-    $stmt->bindParam(':image', $image);
-    $stmt->bindParam(':description', $description);
-    if ($stmt->execute()) {
-      header("Location: /catalogue");
-      exit();
+    // Vérifier et valider le fichier image
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $imageTmpName = $_FILES['image']['tmp_name'];
+        $imageName = basename($_FILES['image']['name']);
+        $imagePath = __DIR__ . '/../uploads/' . $imageName;
+
+        // Déplacer le fichier image vers le répertoire 'uploads'
+        if (move_uploaded_file($imageTmpName, $imagePath)) {
+            $imageURL = '/uploads/' . $imageName;
+        } else {
+            echo '<p class="text-red-500 text-center">Failed to upload image.</p>';
+            exit();
+        }
     } else {
-      $errors[] = "Erreur lors de l'ajout du contenu.";
+        echo '<p class="text-red-500 text-center">Image file is required!</p>';
+        exit();
     }
-  }
+
+    // Valider les données restantes
+    if (empty($title) || empty($description)) {
+        echo '<p class="text-red-500 text-center">Title and description are required!</p>';
+        exit();
+    }
+
+    try {
+        // Préparer la requête d'insertion
+        $stmt = $conn->prepare('INSERT INTO content (title, description, image, youtube_link) VALUES (:title, :description, :image, :youtube_link)');
+        $stmt->execute([
+            ':title' => $title,
+            ':description' => $description,
+            ':image' => $imageURL,
+            ':youtube_link' => $youtube_link,
+        ]);
+
+        // Rediriger vers la page admin après l'ajout
+        header('Location: /admin');
+        exit();
+    } catch (PDOException $e) {
+        echo '<p class="text-red-500 text-center">Error adding content: ' . htmlspecialchars($e->getMessage()) . '</p>';
+    }
+} else {
+    echo '<p class="text-red-500 text-center">Invalid request method!</p>';
 }
-?>
-
-<h2>Ajouter une nouvelle vignette</h2>
-<form method="post">
-  <label for="title">Titre:</label>
-  <input type="text" id="title" name="title" required><br><br>
-
-  <label for="image">URL de l'image:</label>
-  <input type="text" id="image" name="image" required><br><br>
-
-  <label for="description">Description:</label>
-  <textarea id="description" name="description" required></textarea><br><br>
-
-  <button type="submit">Ajouter</button>
-</form>
-
-<?php
-if ($errors) {
-  foreach ($errors as $error) {
-    echo '<p style="color:red;">' . htmlspecialchars($error) . '</p>';
-  }
-}
-
-include __DIR__ . '/../includes/footer.php';
-?>

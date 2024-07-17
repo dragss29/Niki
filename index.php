@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Démarrer une session si ce n'est pas déjà fait
 if (session_status() == PHP_SESSION_NONE) {
@@ -26,50 +29,19 @@ $routes = [
         if (isset($_SESSION['user_id'])) {
             require ROOT_PATH . 'pages/catalogue.php';
         } else {
-            header("Location: /login");
-            exit();
-        }
-    },
-    '/add_content' => function () {
-        if (isset($_SESSION['user_id'])) {
-            require ROOT_PATH . 'pages/add_content.php';
-        } else {
-            header("Location: /login");
-            exit();
-        }
-    },
-    '/add_content_process' => function () {
-        if (isset($_SESSION['user_id'])) {
-            require ROOT_PATH . 'pages/add_content_process.php';
-        } else {
-            header("Location: /login");
-            exit();
-        }
-    },
-    '/edit_content' => function () {
-        if (isset($_SESSION['user_id']) && !empty($_SESSION['is_admin'])) {
-            require ROOT_PATH . 'pages/edit_content.php';
-        } else {
-            header("Location: /login");
-            exit();
-        }
-    },
-    '/delete_content' => function () {
-        if (isset($_SESSION['user_id']) && !empty($_SESSION['is_admin'])) {
-            require ROOT_PATH . 'pages/delete_content.php';
-        } else {
-            header("Location: /login");
-            exit();
+            echo '<p class="text-red-500 text-center">You must be logged in to view courses.</p>';
         }
     },
     '/admin' => function () {
-        if (isset($_SESSION['user_id']) && !empty($_SESSION['is_admin'])) {
+        if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'superadmin') {
             require ROOT_PATH . 'pages/admin.php';
         } else {
-            header("Location: /login");
-            exit();
+            echo '<p class="text-red-500 text-center">You need to be logged in as superadmin to access the admin page.</p>';
         }
     },
+    '/add_content' => ROOT_PATH . 'pages/add_content.php',
+    '/edit_content' => ROOT_PATH . 'pages/edit_content.php',
+    '/delete_content' => ROOT_PATH . 'pages/delete_content.php',
     '/logout' => function () {
         session_unset();
         session_destroy();
@@ -101,7 +73,7 @@ function handleRoute($request, $routes)
             require ROOT_PATH . 'pages/detail.php';
         } else {
             http_response_code(400);
-            echo "Paramètre 'id' manquant.";
+            echo '<p class="text-red-500 text-center">Missing \'id\' parameter.</p>';
         }
         return;
     }
@@ -113,5 +85,3 @@ function handleRoute($request, $routes)
 
 // Appeler le gestionnaire de route
 handleRoute($request, $routes);
-
-?>

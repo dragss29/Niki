@@ -1,31 +1,58 @@
 <?php
-include __DIR__ . '/../includes/db.php'; // Assurez-vous que le chemin est correct
+include __DIR__ . '/../includes/db.php'; // Assure-toi que le chemin est correct pour inclure db.php
 
-$response = ['success' => false];
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $id = $_POST['id'];
-  $title = $_POST['title'];
-  $description = $_POST['description'];
-  $image = $_POST['image'];
-  $video_url = $_POST['video_url'];
-  $youtube_link = $_POST['youtube_link'];
-
-  try {
-    $stmt = $conn->prepare('UPDATE content SET title = :title, description = :description, image = :image, video_url = :video_url, youtube_link = :youtube_link WHERE id = :id');
-    $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':title', $title);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':image', $image);
-    $stmt->bindParam(':video_url', $video_url);
-    $stmt->bindParam(':youtube_link', $youtube_link);
-    $stmt->execute();
-
-    $response['success'] = true;
-  } catch (PDOException $e) {
-    $response['error'] = 'Error updating content: ' . $e->getMessage();
-  }
+// Vérifie si l'utilisateur est connecté et a le rôle 'superadmin'
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'superadmin') {
+    echo '<p class="text-red-500 text-center mt-4">You need to be logged in as superadmin to access this page.</p>';
+    exit();
 }
 
-echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = isset($_POST['id']) ? intval($_POST['id']) : null;
+    $title = isset($_POST['title']) ? $_POST['title'] : null;
+    $description = isset($_POST['description']) ? $_POST['description'] : null;
+    $youtube_link = isset($_POST['youtube_link']) ? $_POST['youtube_link'] : null;
+
+    if ($id && $title && $description) {
+        try {
+            $imagePath = null;
+
+            if (!empty($_FILES['image']['name'])) {
+                $uploadDir = __DIR__ . '/../uploads/';
+                $uploadFile = $uploadDir . basename($_FILES['image']['name']);
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+                    $imagePath = '/uploads/' . basename($_FILES['image']['name']);
+                } else {
+                    echo '<p class="text-red-500 text-center mt-4">Failed to upload image.</p>';
+                    exit();
+                }
+            }
+
+            $query = 'UPDATE content SET title = :title, description = :description, youtube_link = :youtube_link';
+            if ($imagePath) {
+                $query .= ', image = :image';
+            }
+            $query .= ' WHERE id = :id';
+
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':youtube_link', $youtube_link);
+            if ($imagePath) {
+                $stmt->bindParam(':image', $imagePath);
+            }
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            header('Location: /admin');
+            exit();
+        } catch (PDOException $e) {
+            echo '<p class="text-red-500 text-center mt-4">Error updating content: ' . htmlspecialchars($e->getMessage()) . '</p>';
+        }
+    } else {
+        echo '<p class="text-red-500 text-center mt-4">Invalid input.</p>';
+    }
+} else {
+    echo '<p class="text-red-500 text-center mt-4">Invalid request method.</p>';
+}
 ?>

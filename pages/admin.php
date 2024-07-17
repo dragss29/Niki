@@ -2,245 +2,133 @@
 include __DIR__ . '/../includes/db.php'; // Assure-toi que le chemin est correct pour inclure db.php
 include __DIR__ . '/../includes/header.php';
 
+// Vérifie si l'utilisateur est connecté et a le rôle 'superadmin'
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'superadmin') {
+    echo '<p class="text-red-500 text-center mt-4">You need to be logged in as superadmin to access this page.</p>';
+    include __DIR__ . '/../includes/footer.php';
+    exit();
+}
+
 try {
-    // Requête pour récupérer les contenus
-    $query = $conn->query('SELECT id, title, description, image FROM content');
+    // Récupérer les contenus depuis la base de données
+    $query = $conn->query('SELECT id, title, description, image, youtube_link FROM content');
     $contents = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo 'Error fetching contents: ' . $e->getMessage();
+    echo '<p class="text-red-500 text-center mt-4">Error fetching contents: ' . htmlspecialchars($e->getMessage()) . '</p>';
 }
 ?>
 
-<main class="admin-container">
-    <h1>Admin - Gestion des Contenus</h1>
-    <button id="addContentBtn" class="button">Ajouter une Vignette</button>
+<main class="py-10 px-4 max-w-6xl mx-auto bg-white rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold mb-6 text-center">Admin - Content Management</h1>
+    <button id="openModalButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600">Add Content</button>
 
-    <div class="content-list">
-        <?php foreach ($contents as $content): ?>
-            <div class="content-item">
-                <img src="<?= htmlspecialchars($content['image']) ?>" alt="<?= htmlspecialchars($content['title']) ?>">
-                <div class="content-info">
-                    <h2><?= htmlspecialchars($content['title']) ?></h2>
-                    <p><?= htmlspecialchars($content['description']) ?></p>
-                    <button
-                        onclick="openEditModal(<?= $content['id'] ?>, '<?= htmlspecialchars($content['title']) ?>', '<?= htmlspecialchars($content['description']) ?>', '<?= htmlspecialchars($content['image']) ?>')">Edit</button>
-                    <button onclick="openDeleteModal(<?= $content['id'] ?>)">Delete</button>
+    <!-- Modal Add Content -->
+    <div id="addContentModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+            <h2 class="text-2xl font-bold mb-4">Add New Content</h2>
+            <form id="addContentForm" action="/add_content" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-700 mb-2">Title</label>
+                    <input type="text" id="title" name="title" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
-            </div>
-        <?php endforeach; ?>
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700 mb-2">Description</label>
+                    <textarea id="description" name="description" class="w-full p-2 border border-gray-300 rounded" rows="4" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="youtube_link" class="block text-gray-700 mb-2">YouTube Link</label>
+                    <input type="url" id="youtube_link" name="youtube_link" class="w-full p-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="image" class="block text-gray-700 mb-2">Image File</label>
+                    <input type="file" id="image" name="image" class="w-full p-2 border border-gray-300 rounded" accept="image/*" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600">Add Content</button>
+                </div>
+            </form>
+            <button id="closeModalButton" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+    </div>
+
+    <!-- Modal Edit Content -->
+    <div id="editContentModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+            <h2 class="text-2xl font-bold mb-4">Edit Content</h2>
+            <form id="editContentForm" action="/edit_content" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="edit_id" name="id">
+                <div class="mb-4">
+                    <label for="edit_title" class="block text-gray-700 mb-2">Title</label>
+                    <input type="text" id="edit_title" name="title" class="w-full p-2 border border-gray-300 rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="edit_description" class="block text-gray-700 mb-2">Description</label>
+                    <textarea id="edit_description" name="description" class="w-full p-2 border border-gray-300 rounded" rows="4" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="edit_youtube_link" class="block text-gray-700 mb-2">YouTube Link</label>
+                    <input type="url" id="edit_youtube_link" name="youtube_link" class="w-full p-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="edit_image" class="block text-gray-700 mb-2">Image File (Leave blank to keep the current image)</label>
+                    <input type="file" id="edit_image" name="image" class="w-full p-2 border border-gray-300 rounded" accept="image/*">
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600">Update Content</button>
+                </div>
+            </form>
+            <button id="closeEditModalButton" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+        </div>
+    </div>
+
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <?php if (!empty($contents)): ?>
+            <?php foreach ($contents as $content): ?>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col items-center relative">
+                    <form action="/delete_content" method="POST" class="absolute top-2 right-2">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($content['id']) ?>">
+                        <button type="submit" class="text-red-500 hover:text-red-700 text-xl" title="Delete Content" onclick="return confirm('Are you sure you want to delete this content? This action cannot be undone.');">
+                            &times;
+                        </button>
+                    </form>
+                    <button class="text-blue-500 hover:text-blue-700 text-xl absolute top-2 left-2" title="Edit Content" onclick="openEditModal(<?= htmlspecialchars(json_encode($content)) ?>)">
+                        &#9998;
+                    </button>
+                    <img src="<?= htmlspecialchars($content['image']) ?>" alt="<?= htmlspecialchars($content['title']) ?>" class="w-full h-32 object-cover mb-4 rounded">
+                    <div class="text-center">
+                        <h2 class="text-xl font-semibold mb-2"><?= htmlspecialchars($content['title']) ?></h2>
+                        <p class="text-gray-600 mb-4"><?= htmlspecialchars($content['description']) ?></p>
+                        <a href="<?= htmlspecialchars($content['youtube_link']) ?>" target="_blank" class="text-blue-500 hover:underline mb-2 block">YouTube Link</a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p class="text-gray-500 text-center mt-4">No content available.</p>
+        <?php endif; ?>
     </div>
 </main>
 
-<!-- Modal pour l'ajout d'un contenu -->
-<div id="addModal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="addModalClose">&times;</span>
-        <h2>Ajouter un Contenu</h2>
-        <form id="addContentForm" method="POST" action="/add_content_process" enctype="multipart/form-data">
-            <label for="title">Titre</label>
-            <input type="text" id="title" name="title" required>
-
-            <label for="description">Description</label>
-            <textarea id="description" name="description" required></textarea>
-
-            <label for="image">Image</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
-
-            <button type="submit" class="button">Ajouter</button>
-        </form>
-    </div>
-</div>
-
-<!-- Modal pour l'édition d'un contenu -->
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="editModalClose">&times;</span>
-        <h2>Éditer le Contenu</h2>
-        <form id="editContentForm" method="POST" action="/edit_content" enctype="multipart/form-data">
-            <input type="hidden" id="editContentId" name="id">
-
-            <label for="editTitle">Titre</label>
-            <input type="text" id="editTitle" name="title" required>
-
-            <label for="editDescription">Description</label>
-            <textarea id="editDescription" name="description" required></textarea>
-
-            <label for="editImage">Image (laisser vide pour conserver l'image actuelle)</label>
-            <input type="file" id="editImage" name="image" accept="image/*">
-
-            <button type="submit" class="button">Enregistrer les Modifications</button>
-        </form>
-    </div>
-</div>
-
-<!-- Modal pour la suppression d'un contenu -->
-<div id="deleteModal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="deleteModalClose">&times;</span>
-        <h2>Supprimer le Contenu</h2>
-        <p>Êtes-vous sûr de vouloir supprimer ce contenu ?</p>
-        <button id="confirmDeleteBtn" class="button">Supprimer</button>
-        <button id="cancelDeleteBtn" class="button">Annuler</button>
-    </div>
-</div>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
 
 <script>
-    // Ouvrir et fermer les modals
-    const addContentBtn = document.getElementById('addContentBtn');
-    const addModal = document.getElementById('addModal');
-    const addModalClose = document.getElementById('addModalClose');
+document.getElementById('openModalButton').addEventListener('click', function() {
+    document.getElementById('addContentModal').classList.remove('hidden');
+});
 
-    const editModal = document.getElementById('editModal');
-    const editModalClose = document.getElementById('editModalClose');
+document.getElementById('closeModalButton').addEventListener('click', function() {
+    document.getElementById('addContentModal').classList.add('hidden');
+});
 
-    const deleteModal = document.getElementById('deleteModal');
-    const deleteModalClose = document.getElementById('deleteModalClose');
+document.getElementById('closeEditModalButton').addEventListener('click', function() {
+    document.getElementById('editContentModal').classList.add('hidden');
+});
 
-    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-
-    addContentBtn.onclick = () => addModal.style.display = 'block';
-    addModalClose.onclick = () => addModal.style.display = 'none';
-
-    function openEditModal(id, title, description, image) {
-        document.getElementById('editContentId').value = id;
-        document.getElementById('editTitle').value = title;
-        document.getElementById('editDescription').value = description;
-        document.getElementById('editImage').value = ''; // Réinitialiser le champ d'image
-        editModal.style.display = 'block';
-    }
-
-    editModalClose.onclick = () => editModal.style.display = 'none';
-
-    function openDeleteModal(id) {
-        confirmDeleteBtn.onclick = () => {
-            fetch('/delete_content', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: id })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message);
-                        location.reload(); // Recharger la page après suppression
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting content');
-                });
-        };
-        deleteModal.style.display = 'block';
-    }
-
-    deleteModalClose.onclick = () => deleteModal.style.display = 'none';
-    cancelDeleteBtn.onclick = () => deleteModal.style.display = 'none';
-
-    // Fermeture des modals en cliquant en dehors de la modal
-    window.onclick = (event) => {
-        if (event.target == addModal) addModal.style.display = 'none';
-        if (event.target == editModal) editModal.style.display = 'none';
-        if (event.target == deleteModal) deleteModal.style.display = 'none';
-    };
+function openEditModal(content) {
+    document.getElementById('edit_id').value = content.id;
+    document.getElementById('edit_title').value = content.title;
+    document.getElementById('edit_description').value = content.description;
+    document.getElementById('edit_youtube_link').value = content.youtube_link;
+    document.getElementById('edit_image').value = ''; // Pour ne pas conserver le fichier précédent
+    document.getElementById('editContentModal').classList.remove('hidden');
+}
 </script>
-
-<style>
-    .admin-container {
-        padding: 20px;
-    }
-
-    .content-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .content-item {
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        overflow: hidden;
-        width: 200px;
-        text-align: center;
-    }
-
-    .content-item img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    .content-info {
-        padding: 10px;
-    }
-
-    .button {
-        padding: 10px 15px;
-        margin: 5px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    .button:hover {
-        background-color: #0056b3;
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-content {
-        background-color: #fff;
-        margin: 15% auto;
-        padding: 20px;
-        border-radius: 5px;
-        width: 80%;
-        max-width: 500px;
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    form label {
-        margin-top: 10px;
-    }
-
-    form input,
-    form textarea {
-        padding: 10px;
-        margin-top: 5px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-    }
-</style>
-
-<?php include __DIR__ . '/../includes/footer.php'; ?>

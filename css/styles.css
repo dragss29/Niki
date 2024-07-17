@@ -1,83 +1,334 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Réinitialisation des styles pour garantir une base cohérente */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Définition des variables CSS pour les couleurs et les styles */
 :root {
-    --primary-bg-color: #f8f9fa; /* Couleur de fond principale */
-    --secondary-bg-color: #343a40; /* Couleur de fond secondaire */
-    --primary-text-color: #212529; /* Couleur du texte principal */
-    --secondary-text-color: #adb5bd; /* Couleur du texte secondaire */
-    --accent-color: #007bff; /* Couleur d'accentuation */
-    --button-bg-color: #007bff; /* Couleur de fond des boutons */
-    --button-hover-bg-color: #0056b3; /* Couleur de fond au survol des boutons */
-    --header-bg-color: #343a40; /* Couleur de fond de l'en-tête */
-    --footer-bg-color: #343a40; /* Couleur de fond du pied de page */
-    --form-bg-color: #ffffff; /* Couleur de fond des formulaires */
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre portée */
-    --border-radius: 0.375rem; /* Rayon des bordures arrondies */
-    --transition-duration: 0.3s; /* Durée de la transition */
+  --primary-bg-color: #f8f9fa; /* Couleur de fond principale */
+  --secondary-bg-color: #343a40; /* Couleur de fond secondaire */
+  --primary-text-color: #212529; /* Couleur du texte principal */
+  --secondary-text-color: #adb5bd; /* Couleur du texte secondaire */
+  --accent-color: #007bff; /* Couleur d'accentuation */
+  --button-bg-color: #007bff; /* Couleur de fond des boutons */
+  --button-hover-bg-color: #0056b3; /* Couleur de fond au survol des boutons */
+  --header-bg-color: #343a40; /* Couleur de fond de l'en-tête */
+  --footer-bg-color: #343a40; /* Couleur de fond du pied de page */
+  --form-bg-color: #ffffff; /* Couleur de fond des formulaires */
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre portée */
+  --border-radius: 0.375rem; /* Rayon des bordures arrondies */
+  --transition-duration: 0.3s; /* Durée de la transition */
 }
 
 /* Styles globaux */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: var(--primary-text-color); /* Couleur du texte principal */
-    background-color: var(--primary-bg-color); /* Couleur de fond principale */
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--primary-text-color); /* Couleur du texte principal */
+  background-color: var(--primary-bg-color); /* Couleur de fond principale */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Hauteur minimale pour occuper l'écran */
 }
 
 /* En-tête */
 header {
-    background: var(--header-bg-color); /* Couleur de fond de l'en-tête */
-    color: #ffffff; /* Couleur du texte dans l'en-tête */
-    padding: 1rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée */
+  background: var(--header-bg-color); /* Couleur de fond de l'en-tête */
+  color: #ffffff; /* Couleur du texte dans l'en-tête */
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée */
+}
+
+/* Pied de page */
+footer {
+  background-color: var(--footer-bg-color);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  text-align: center;
+  color: #ffffff;
+  margin-top: auto; /* Force le footer en bas de l'écran */
 }
 
 /* Contenu principal pour compenser l'en-tête fixe */
 main {
-    padding-top: 4rem;
-    max-width: 1200px; /* Largeur maximale du contenu principal */
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1; /* Prend toute la hauteur restante */
 }
 
-/* Styles de l'en-tête */
-header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    text-align: center;
+/* Styles des formulaires de connexion et d'inscription */
+.login-form-container, .register-form-container {
+  width: 100%;
+  max-width: 400px; /* Limite la largeur maximale du formulaire */
+  background-color: var(--form-bg-color); /* Couleur de fond du formulaire */
+  border-radius: var(--border-radius); /* Bordures arrondies */
+  box-shadow: var(--box-shadow); /* Ombre portée */
+  padding: 2rem; /* Ajout de padding interne */
 }
 
-/* Navigation */
-nav {
-    display: flex;
-    justify-content: space-around;
-    padding: 1rem;
+/* Enlever les couleurs de fond dans login et register */
+.login-form-container, .register-form-container {
+  background-color: var(--form-bg-color);
 }
 
-nav a {
-    color: #ffffff; /* Couleur des liens dans la navigation */
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    transition: background var(--transition-duration);
+.login-form-container h2, .register-form-container h2 {
+  color: var(--primary-text-color); /* Couleur du texte principal */
+  text-align: center; /* Centre le texte */
+  margin-bottom: 1rem; /* Espacement en bas du titre */
 }
 
-nav a:hover {
-    background: var(--button-hover-bg-color); /* Couleur de fond des liens au survol */
-    border-radius: var(--border-radius); /* Bordures arrondies des liens */
+/* Styles du formulaire */
+.login-form-container form, .register-form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Espacement entre les éléments du formulaire */
 }
 
-/* Autres styles spécifiques peuvent être ajoutés ici */
+/* Champs de formulaire */
+.login-form-container input, .register-form-container input {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db; /* Bordure des champs de formulaire */
+  border-radius: var(--border-radius); /* Bordures arrondies des champs */
+  background-color: #ffffff; /* Fond des champs de formulaire */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Ombre légère des champs */
+}
+
+.login-form-container input:focus, .register-form-container input:focus {
+  border-color: var(--accent-color); /* Bordure bleue au focus */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5); /* Ombre au focus */
+}
+
+/* Messages d'erreur et de succès */
+.login-form-container .error-message, .register-form-container .error-message {
+  padding: 0.75rem;
+  border-radius: var(--border-radius); /* Bordures arrondies */
+}
+
+/* Message d'erreur */
+.login-form-container .error-message {
+  background-color: #fdd;
+  color: #f00;
+  border: 1px solid #f00;
+}
+
+.register-form-container .error-message {
+  background-color: #fdd;
+  color: #f00;
+  border: 1px solid #f00;
+}
+
+/* Message de succès */
+.login-form-container .success-message, .register-form-container .success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* Bouton de soumission */
+.login-form-container button, .register-form-container button {
+  padding: 0.75rem;
+  background-color: var(--accent-color); /* Couleur de fond du bouton */
+  color: #ffffff;
+  border: none;
+  border-radius: var(--border-radius); /* Bordures arrondies du bouton */
+  cursor: pointer;
+  transition: background-color var(--transition-duration); /* Transition de couleur */
+}
+
+.login-form-container button:hover, .register-form-container button:hover {
+  background-color: var(--button-hover-bg-color); /* Couleur plus foncée au survol */
+}
+
+/* Ajustement des liens */
+.login-form-container a, .register-form-container a {
+  color: var(--accent-color); /* Couleur des liens */
+}
+
+.login-form-container a:hover, .register-form-container a:hover {
+  color: #0056b3; /* Couleur au survol des liens */
+}
+
+/* Style des liens "Mot de passe oublié" */
+.login-form-container a, .register-form-container a {
+  color: var(--accent-color);
+}
+
+.login-form-container a:hover, .register-form-container a:hover {
+  color: var(--button-hover-bg-color);
+}
+
+/* Cacher la partie du formulaire de réinitialisation du mot de passe */
+.password-reset-container {
+  display: none;
+}
+
+/* Style pour les messages d'erreur de la réinitialisation du mot de passe */
+.password-reset-container .error-message {
+  background-color: #fdd;
+  color: #f00;
+  border: 1px solid #f00;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+}
+
+/* Page Catalogue */
+.catalogue-container {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Titre du Catalogue */
+.catalogue-container h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-text-color);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Grille de Catalogue */
+.catalogue-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Item du Catalogue */
+.catalogue-item {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Image de l'Item */
+.catalogue-item img {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+}
+
+/* Infos de l'Item */
+.catalogue-item-info {
+  padding: 1rem;
+}
+
+/* Titre de l'Item */
+.catalogue-item-info h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--primary-text-color);
+  margin-bottom: 0.5rem;
+}
+
+/* Description de l'Item */
+.catalogue-item-info p {
+  color: var(--secondary-text-color);
+  margin-bottom: 1rem;
+}
+
+/* Bouton "Voir Détail" */
+.catalogue-item-info .button {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  display: block;
+  transition: background-color var(--transition-duration);
+}
+
+.catalogue-item-info .button:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+/* Vignette d'Ajout */
+.add-item {
+  background-color: #f0f0f0;
+  border: 2px dashed var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Bouton d'Ajout */
+.add-button {
+  font-size: 2rem;
+  color: var(--accent-color);
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenu du Modal */
+.modal-content {
+  background-color: var(--form-bg-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Bouton de Fermeture du Modal */
+.close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: #4a5568;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #2d3748;
+}
+
+/* Champs du Formulaire du Modal */
+.modal-content input, .modal-content textarea {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: var(--border-radius);
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+/* Bouton d'Ajout du Modal */
+.modal-content button {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition-duration);
+  width: 100%;
+}
+
+.modal-content button:hover {
+  background-color: var(--button-hover-bg-color);
+}
