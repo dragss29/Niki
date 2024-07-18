@@ -11,9 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = isset($_POST['id']) ? intval($_POST['id']) : null;
     $title = isset($_POST['title']) ? $_POST['title'] : null;
     $description = isset($_POST['description']) ? $_POST['description'] : null;
+    $category = isset($_POST['category']) ? $_POST['category'] : null;
     $youtube_link = isset($_POST['youtube_link']) ? $_POST['youtube_link'] : null;
 
-    if ($id && $title && $description) {
+    if ($id && $title && $description && $category) {
         try {
             $imagePath = null;
 
@@ -28,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $query = 'UPDATE content SET title = :title, description = :description, youtube_link = :youtube_link';
+            $query = 'UPDATE content SET title = :title, description = :description, category = :category, youtube_link = :youtube_link';
             if ($imagePath) {
                 $query .= ', image = :image';
             }
@@ -37,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':category', $category);
             $stmt->bindParam(':youtube_link', $youtube_link);
             if ($imagePath) {
                 $stmt->bindParam(':image', $imagePath);

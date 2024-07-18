@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupérer les données du formulaire
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
+    $category = trim($_POST['category']);
     $youtube_link = trim($_POST['youtube_link']);
 
     // Vérifier et valider le fichier image
@@ -32,17 +33,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Valider les données restantes
-    if (empty($title) || empty($description)) {
-        echo '<p class="text-red-500 text-center">Title and description are required!</p>';
+    if (empty($title) || empty($description) || empty($category)) {
+        echo '<p class="text-red-500 text-center">Title, description, and category are required!</p>';
         exit();
     }
 
     try {
         // Préparer la requête d'insertion
-        $stmt = $conn->prepare('INSERT INTO content (title, description, image, youtube_link) VALUES (:title, :description, :image, :youtube_link)');
+        $stmt = $conn->prepare('INSERT INTO content (title, description, category, image, youtube_link) VALUES (:title, :description, :category, :image, :youtube_link)');
         $stmt->execute([
             ':title' => $title,
             ':description' => $description,
+            ':category' => $category,
             ':image' => $imageURL,
             ':youtube_link' => $youtube_link,
         ]);
@@ -56,3 +58,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo '<p class="text-red-500 text-center">Invalid request method!</p>';
 }
+?>

@@ -4,11 +4,13 @@ include __DIR__ . '/../includes/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $confirmPassword = trim($_POST['confirm_password']);
 
     error_log('Register form submitted');
     error_log("Username: $username");
+    error_log("Email: $email");
     error_log("Password: $password");
     error_log("Confirm Password: $confirmPassword");
 
@@ -37,9 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $conn->prepare('INSERT INTO users (username, password) VALUES (:username, :password)');
+        $stmt = $conn->prepare('INSERT INTO users (username, password, email) VALUES (:username, :password, :email)');
         $stmt->bindParam(':username', $username, PDO::PARAM_STR);
         $stmt->bindParam(':password', $passwordHash, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
             // Connecter l'utilisateur après l'inscription

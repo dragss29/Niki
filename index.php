@@ -20,7 +20,7 @@ $request = parse_url($request, PHP_URL_PATH);
 // Supprimer le slash final pour uniformité
 $request = rtrim($request, '/');
 
-// Traiter les routes définies
+// Routeur simple
 $routes = [
     '/' => ROOT_PATH . 'pages/home.php',
     '/login' => ROOT_PATH . 'pages/login.php',
@@ -30,6 +30,7 @@ $routes = [
             require ROOT_PATH . 'pages/catalogue.php';
         } else {
             echo '<p class="text-red-500 text-center">You must be logged in to view courses.</p>';
+            require ROOT_PATH . 'pages/login.php';
         }
     },
     '/admin' => function () {
@@ -39,6 +40,8 @@ $routes = [
             echo '<p class="text-red-500 text-center">You need to be logged in as superadmin to access the admin page.</p>';
         }
     },
+    '/profile' => ROOT_PATH . 'pages/profile.php',
+    '/check_subscription' => ROOT_PATH . 'pages/check_subscription.php',
     '/add_content' => ROOT_PATH . 'pages/add_content.php',
     '/edit_content' => ROOT_PATH . 'pages/edit_content.php',
     '/delete_content' => ROOT_PATH . 'pages/delete_content.php',
@@ -49,6 +52,7 @@ $routes = [
         exit();
     }
 ];
+
 
 // Fonction pour gérer les routes
 function handleRoute($request, $routes)
@@ -80,7 +84,7 @@ function handleRoute($request, $routes)
 
     // Page 404
     http_response_code(404);
-    require ROOT_PATH . 'pages/404.php';
+    require ROOT_PATH . 'pages/home.php';
 }
 
 // Appeler le gestionnaire de route
